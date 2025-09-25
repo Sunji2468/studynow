@@ -61,7 +61,7 @@ export const FlashcardComponent = ({
           </Card>
 
           {/* Back */}
-          <Card className="flashcard-face flashcard-back card-shadow">
+          <Card className="flashcard-face flashcard-back card-shadow -mt-72">
             <div className="w-full h-full flex flex-col">
               <div className="flex-1 flex items-center justify-center p-4">
                 <p className="text-lg font-medium text-center leading-relaxed">

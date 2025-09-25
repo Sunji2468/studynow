@@ -25,13 +25,13 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link to="/create-deck">
+            <Link to="/create">
               <Button size="lg" className="hero-gradient text-primary-foreground px-8 py-6 text-lg font-semibold glow-effect">
                 <Plus className="w-5 h-5 mr-2" />
                 Create Your Flashcards
               </Button>
             </Link>
-            <Link to="/my-decks">
+            <Link to="/decks">
               <Button variant="outline" size="lg" className="px-8 py-6 text-lg font-semibold">
                  Browse
               </Button>
