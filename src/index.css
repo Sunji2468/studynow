@@ -141,6 +141,10 @@
   .flashcard.flipped {
     transform: rotateY(180deg);
   }
+
+  .flashcard.unflipped {
+    transform: rotateY(0deg);
+  }
   
   .flashcard-face {
     @apply absolute inset-0 w-full h-full p-6 flex items-center justify-center text-center;

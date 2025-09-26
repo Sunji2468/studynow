@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
@@ -20,6 +20,9 @@ export const FlashcardComponent = ({
   className = "" 
 }: FlashcardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  useEffect(() => {
+    setIsFlipped(false);
+  }, [card]);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
@@ -40,7 +43,15 @@ export const FlashcardComponent = ({
       {/* Flashcard */}
       <div className="perspective-1000 mb-6">
         <div 
-          className={`flashcard ${isFlipped ? 'flipped' : ''}`}
+          className={`flashcard`}
+          style={{
+            transformStyle: 'preserve-3d',
+            transition: 'transform 0.6s',
+            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            cursor: 'pointer',
+            height: '300px',
+            position: 'relative',
+          }}
           onClick={handleFlip}
         >
           {/* Front */}
