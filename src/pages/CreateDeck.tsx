@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,9 +10,15 @@ import { useToast } from "@/hooks/use-toast";
 import { Deck, Flashcard } from "@/types/flashcard";
 
 const CreateDeck = () => {
-  const [deckTitle, setDeckTitle] = useState("");
-  const [deckDescription, setDeckDescription] = useState("");
-  const [cards, setCards] = useState<Omit<Flashcard, "id" | "createdAt">[]>([
+  const [searchParams] = useSearchParams();
+  const id = searchParams.get("id");
+  const savedDecks = JSON.parse(localStorage.getItem("studynow-decks") || "[]");
+  const foundDeck = savedDecks.find((d: Deck) => d.id === id);
+  const [deckTitle, setDeckTitle] = useState(foundDeck?.title || "");
+  const [deckDescription, setDeckDescription] = useState(foundDeck?.description || "");
+  const [cards, setCards] = useState<Omit<Flashcard, "id" | "createdAt">[]>(
+    foundDeck?.cards.map((card: Flashcard) => ({ front: card.front, back: card.back })) ||
+    [
     { front: "", back: "" },
     { front: "", back: "" }
   ]);
@@ -58,7 +64,7 @@ const CreateDeck = () => {
     }
 
     const newDeck: Deck = {
-      id: Date.now().toString(),
+      id: foundDeck?.id || Date.now().toString(),
       title: deckTitle.trim(),
       description: deckDescription.trim(),
       cards: validCards.map(card => ({
@@ -71,7 +77,12 @@ const CreateDeck = () => {
 
     // Save to localStorage (in a real app, this would be API call)
     const existingDecks = JSON.parse(localStorage.getItem("studynow-decks") || "[]");
-    localStorage.setItem("studynow-decks", JSON.stringify([...existingDecks, newDeck]));
+    // localStorage.setItem("studynow-decks", JSON.stringify([...existingDecks, newDeck]));
+    const updatedDecks = foundDeck 
+      ? existingDecks.map((d: Deck) => d.id === foundDeck.id ? newDeck : d)
+      : [...existingDecks, newDeck];
+    localStorage.setItem("studynow-decks", JSON.stringify(updatedDecks));
+    
 
     toast({
       title: "Success!",
